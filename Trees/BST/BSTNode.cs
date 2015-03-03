@@ -57,10 +57,6 @@ namespace BST
             left = lc;
         }
 
-        public void setValue(T v) {
-            value = v;
-        }
-
         public int getNumberOfChildren() {
             if(left != null && right != null)
             {
