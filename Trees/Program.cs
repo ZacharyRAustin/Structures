@@ -11,21 +11,46 @@ namespace Trees
     class Program
     {
         static void Main(string[] args) {
-            GraphNode<int> nodeA = new GraphNode<int>(1);
-            GraphNode<int> nodeB = new GraphNode<int>(2);
-            GraphNode<int> nodeC = new GraphNode<int>(3);
 
-            UndirectedGraph<int> g = new UndirectedGraph<int>();
-            g.insertNode(nodeA);
-            g.insertNode(nodeB);
+            BST<int> tree = new BST<int>();
+            tree.setComparator(compareInts);
 
-            nodeC.addNeighbor(nodeA);
-            nodeC.addNeighbor(nodeB, 14);
-            g.insertNode(nodeC);
+            tree.BSTInsert(5);
+            tree.BSTInsert(3);
+            tree.BSTInsert(8);
+            tree.BSTInsert(7);
+            tree.BSTInsert(9);
+            tree.BSTInsert(2);
+            tree.BSTInsert(4);
 
-            g.printNodeNeighbors();
-
+            tree.BFSPrintWithLevels();
+            Console.WriteLine();
+            BSTNode<int> n = (BSTNode<int>)tree.BFSReturningNodeOp(increaseAndFind);
+            Console.WriteLine(n.getValue() + " with children " + n.getLeftChild().getValue()
+                + " and " + n.getRightChild().getValue());
+            Console.WriteLine();
+            tree.BFSNodeOp(printNode);
             Console.ReadLine();
+        }
+
+        public static bool compareInts(int a, int b) {
+            return a > b;
+        }
+
+        public static void printNode(BSTNode<int> n) {
+            Console.WriteLine(n.getValue().ToString() + " at level " + n.getLevel());
+        }
+
+        public static BSTNode<int> increaseAndFind(BSTNode<int> n) {
+            if(n.getValue() == 8)
+            {
+                return n;
+            }
+            else
+            {
+                n.setValue(n.getValue() + 1);
+                return null;
+            }
         }
     }
 }

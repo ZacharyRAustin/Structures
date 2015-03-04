@@ -10,7 +10,6 @@ namespace BST
     {
         BSTNode<T> root = null;
         private Func<T, T, bool> comparator;
-        private Comparer<T> equalCompare;
 
         public BST() {
 
@@ -19,6 +18,7 @@ namespace BST
         //Note: function f should return true if arg1 > arg2
         public BST(BSTNode<T> r, Func<T, T, bool> f) {
             root = r;
+            root.setLevel(0);
             comparator = f;
         }
 
@@ -26,6 +26,7 @@ namespace BST
             if(root == null)
             {
                 root = new BSTNode<T>(val);
+                root.setLevel(0);
                 return root;
             }
 
@@ -33,6 +34,7 @@ namespace BST
             BSTNode<T> parent = findInsertionPoint(val);
 
             newNode.setParent(parent);
+            newNode.setLevel(parent.getLevel() + 1);
 
             if(compare(val, parent.getValue()))
             {
@@ -215,6 +217,103 @@ namespace BST
             {
                 inOrder(n.getRightChild());
             }
+        }
+
+        public void BFSPrint() {
+            Queue<BSTNode<T>> q = new Queue<BSTNode<T>>();
+            q.Enqueue(root);
+
+            while(q.Count != 0)
+            {
+                BSTNode<T> n = q.Dequeue();
+                Console.WriteLine(n.getValue().ToString());
+                if(n.getLeftChild() != null)
+                {
+                    q.Enqueue(n.getLeftChild());
+                }
+                if(n.getRightChild() != null)
+                {
+                    q.Enqueue(n.getRightChild());
+                }
+            }
+        }
+
+        public void BFSPrintWithLevels() {
+            Queue<BSTNode<T>> q = new Queue<BSTNode<T>>();
+            q.Enqueue(root);
+
+            while (q.Count != 0)
+            {
+                BSTNode<T> n = q.Dequeue();
+                Console.WriteLine(n.getValue().ToString() + " at level " + n.getLevel());
+                if (n.getLeftChild() != null)
+                {
+                    q.Enqueue(n.getLeftChild());
+                }
+                if (n.getRightChild() != null)
+                {
+                    q.Enqueue(n.getRightChild());
+                }
+            }
+        }
+
+        public void BFSPrintRecur() {
+            BFSPrintRecur(root);
+        }
+
+        private void BFSPrintRecur(BSTNode<T> n) {
+            Console.WriteLine(n.getValue().ToString());
+            if(n.getLeftChild()!= null)
+            {
+                BFSPrintRecur(n.getLeftChild());
+            }
+            if(n.getRightChild() != null)
+            {
+                BFSPrintRecur(n.getRightChild());
+            }
+        }
+
+        public void BFSNodeOp(Action<BSTNode<T>> f){
+            Queue<BSTNode<T>> q = new Queue<BSTNode<T>>();
+            q.Enqueue(root);
+            while(q.Count != 0){
+                BSTNode<T> n = q.Dequeue();
+                f(n);
+                if(n.getLeftChild() != null)
+                {
+                    q.Enqueue(n.getLeftChild());
+                }
+                if(n.getRightChild() != null)
+                {
+                    q.Enqueue(n.getRightChild());
+                }
+            }
+        }
+
+        public Object BFSReturningNodeOp(Func<BSTNode<T>, Object> f) {
+            Queue<BSTNode<T>> q = new Queue<BSTNode<T>>();
+            q.Enqueue(root);
+            while(q.Count != 0)
+            {
+                BSTNode<T> n = q.Dequeue();
+                Object o = f(n);
+                if(o != null)
+                {
+                    return o;
+                }
+
+                if (n.getLeftChild() != null)
+                {
+                    q.Enqueue(n.getLeftChild());
+                }
+
+                if (n.getRightChild() != null)
+                {
+                    q.Enqueue(n.getRightChild());
+                }
+            }
+
+            return null;
         }
     }
 

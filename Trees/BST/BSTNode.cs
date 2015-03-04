@@ -12,6 +12,7 @@ namespace BST
         private BSTNode<T> right;
         private BSTNode<T> parent;
         private T value;
+        private int level = -1;
 
         public BSTNode(T val) {
             value = val;
@@ -47,14 +48,17 @@ namespace BST
 
         public void setParent(BSTNode<T> p) {
             parent = p;
+            level = p.getLevel() + 1;
         }
 
         public void setRightChild(BSTNode<T> rc) {
             right = rc;
+            right.setLevel(level + 1);
         }
 
         public void setLeftChild(BSTNode<T> lc) {
             left = lc;
+            left.setLevel(level + 1);
         }
 
         public int getNumberOfChildren() {
@@ -106,5 +110,12 @@ namespace BST
             }
         }
 
+        public void setLevel(int l) {
+            level = l;
+        }
+
+        public int getLevel() {
+            return level;
+        }
     }
 }
